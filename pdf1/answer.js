@@ -185,6 +185,15 @@ document.getElementById('root')
 // />;
 // },
 // handleOnChange: function(event) {
+// let timer = null;
+// if (timer !== null) return;
+// timer = setTimeout(() => {
+// 	fetch("fetch data")
+// 		.then((res) => res.json())
+// 		.catch((err) => console.error(err));
+//  clearTimer(timer)
+// }, 1000);
+
 // // make ajax call
 // }
 // });
