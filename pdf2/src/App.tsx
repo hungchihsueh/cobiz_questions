@@ -83,8 +83,6 @@ function App() {
                   return (
                     <DateGrid
                       key={`${currentMonth}-${i}`}
-                      lastMonthLastDate={lastMonthLastDate}
-                      monthFirstDay={monthFirstDay}
                       date={lastMonthLastDate - monthFirstDay + i + 1}
                       currentYear={currentYear}
                       currentMonth={currentMonth}
@@ -94,38 +92,6 @@ function App() {
                       setEndDate={setEndDate}
                       isCurrentMonth={false}
                     />
-                    // <button
-                    //   onClick={() => {
-                    //     if (startDate && endDate) {
-                    //       setStartDate(
-                    //         `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
-                    //       );
-                    //       setEndDate(null);
-                    //     } else if (!startDate) {
-                    //       setStartDate(
-                    //         `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
-                    //       );
-                    //     } else {
-                    //       if (
-                    //         dayjs(
-                    //           `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
-                    //         ).isBefore(dayjs(startDate))
-                    //       ) {
-                    //         setStartDate(
-                    //           `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
-                    //         );
-                    //       } else {
-                    //         setEndDate(
-                    //           `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
-                    //         );
-                    //       }
-                    //     }
-                    //   }}
-                    //   className="flex h-9 w-[50px] items-center justify-center opacity-70 transition-all hover:bg-[#e6e6e6]"
-                    //   key={i}
-                    // >
-                    //   {lastMonthLastDate - monthFirstDay + i + 1}日
-                    // </button>
                   );
                 })
               : null}
@@ -134,8 +100,6 @@ function App() {
             }).map((_, i) => (
               <DateGrid
                 key={`${currentMonth + 1}-${i}`}
-                lastMonthLastDate={lastMonthLastDate}
-                monthFirstDay={monthFirstDay}
                 date={i + 1}
                 currentYear={currentYear}
                 currentMonth={currentMonth + 1}
@@ -145,16 +109,6 @@ function App() {
                 setEndDate={setEndDate}
                 isCurrentMonth={true}
               />
-              // <button
-              //   className={`flex h-9 w-[50px] items-center justify-center bg-white transition-all hover:bg-[#e6e6e6] ${
-              //     dayjs(new Date(currentYear, currentMonth, i + 1)).isToday()
-              //       ? "bg-[#ffff76]"
-              //       : ""
-              //   }`}
-              //   key={i}
-              // >
-              //   {i + 1}日
-              // </button>
             ))}
 
             {dayjs(`${currentYear}-${currentMonth + 1}`).daysInMonth() +
@@ -168,8 +122,6 @@ function App() {
               }).map((_, i) => (
                 <DateGrid
                   key={`${currentMonth + 2}-${i}`}
-                  lastMonthLastDate={lastMonthLastDate}
-                  monthFirstDay={monthFirstDay}
                   date={i + 1}
                   currentYear={currentYear}
                   currentMonth={currentMonth + 2}

@@ -2,8 +2,6 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 type Props = {
-  lastMonthLastDate: number;
-  monthFirstDay: number;
   date: number;
   currentYear: number;
   currentMonth: number;
@@ -15,8 +13,6 @@ type Props = {
 };
 
 export default function DateGrid({
-  lastMonthLastDate,
-  monthFirstDay,
   date,
   currentYear,
   currentMonth,
