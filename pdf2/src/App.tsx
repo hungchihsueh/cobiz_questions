@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DateGrid from "./components/DateGrid";
 import { MdOutlineArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import dayjs from "dayjs";
 import isLeapYaer from "dayjs/plugin/isLeapYear";
@@ -17,8 +18,8 @@ function App() {
   const [monthFirstDay, setMonthFirstDay] = useState(
     dayjs().startOf("month").day(),
   );
-  const [startDate, setStartDate] = useState(dayjs());
-  const [endDate, setEndDate] = useState(dayjs());
+  const [startDate, setStartDate] = useState<null | string>(null);
+  const [endDate, setEndDate] = useState<null | string>(null);
   useEffect(() => {
     console.log(dayjs("2025-2").daysInMonth());
     setLastMonthLastDate(
@@ -33,9 +34,9 @@ function App() {
     );
   }, [currentMonth]);
   return (
-    <div className="w-dvw h-dvh flex items-center justify-center ">
-      <div className="calendar w-[350px] h-[240px] border ">
-        <div className="head flex justify-between items-center w-full h-11 mb-4 ">
+    <div className="flex h-dvh w-dvw flex-col items-center justify-center">
+      <div className="calendar mb-10 h-fit w-[350px] border">
+        <div className="head mb-4 flex h-11 w-full items-center justify-between">
           <button
             onClick={() => {
               if (currentMonth === 0) {
@@ -45,7 +46,7 @@ function App() {
                 setCurrentMonth((prev) => prev - 1);
               }
             }}
-            className="h-11 w-11 bg-white hover:bg-[#e6e6e6] flex justify-center items-center transition-all"
+            className="flex h-11 w-11 items-center justify-center bg-white transition-all hover:bg-[#e6e6e6]"
           >
             <MdOutlineArrowBackIos />
           </button>
@@ -61,7 +62,7 @@ function App() {
                 setCurrentMonth((prev) => prev + 1);
               }
             }}
-            className="h-11 w-11 bg-white hover:bg-[#e6e6e6] flex justify-center items-center transition-all"
+            className="flex h-11 w-11 items-center justify-center bg-white transition-all hover:bg-[#e6e6e6]"
           >
             <MdArrowForwardIos />
           </button>
@@ -80,35 +81,110 @@ function App() {
             {monthFirstDay !== 0
               ? Array.from({ length: monthFirstDay }).map((_, i) => {
                   return (
-                    <button
-                      className="w-[50px] h-9 flex justify-center items-center opacity-70 hover:bg-[#e6e6e6]"
-                      key={i}
-                    >
-                      {lastMonthLastDate - monthFirstDay + i + 1}日
-                    </button>
+                    <DateGrid
+                      key={`${currentMonth}-${i}`}
+                      lastMonthLastDate={lastMonthLastDate}
+                      monthFirstDay={monthFirstDay}
+                      date={lastMonthLastDate - monthFirstDay + i + 1}
+                      currentYear={currentYear}
+                      currentMonth={currentMonth}
+                      startDate={startDate}
+                      setStartDate={setStartDate}
+                      endDate={endDate}
+                      setEndDate={setEndDate}
+                      isCurrentMonth={false}
+                    />
+                    // <button
+                    //   onClick={() => {
+                    //     if (startDate && endDate) {
+                    //       setStartDate(
+                    //         `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
+                    //       );
+                    //       setEndDate(null);
+                    //     } else if (!startDate) {
+                    //       setStartDate(
+                    //         `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
+                    //       );
+                    //     } else {
+                    //       if (
+                    //         dayjs(
+                    //           `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
+                    //         ).isBefore(dayjs(startDate))
+                    //       ) {
+                    //         setStartDate(
+                    //           `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
+                    //         );
+                    //       } else {
+                    //         setEndDate(
+                    //           `${currentYear}-${currentMonth}-${lastMonthLastDate - monthFirstDay + i + 1}`,
+                    //         );
+                    //       }
+                    //     }
+                    //   }}
+                    //   className="flex h-9 w-[50px] items-center justify-center opacity-70 transition-all hover:bg-[#e6e6e6]"
+                    //   key={i}
+                    // >
+                    //   {lastMonthLastDate - monthFirstDay + i + 1}日
+                    // </button>
                   );
                 })
               : null}
             {Array.from({
-              length: Math.min(
-                dayjs(`${currentYear}-${currentMonth + 1}`).daysInMonth(),
-                35 - monthFirstDay,
-              ),
+              length: dayjs(`${currentYear}-${currentMonth + 1}`).daysInMonth(),
             }).map((_, i) => (
-              <div
-                className={`w-[50px] h-9 flex justify-center items-center bg-white ${
-                  dayjs(new Date(currentYear, currentMonth, i + 1)).isToday()
-                    ? "bg-[#ffff76]"
-                    : ""
-                }`}
-                key={i}
-              >
-                {i + 1}日
-              </div>
+              <DateGrid
+                key={`${currentMonth + 1}-${i}`}
+                lastMonthLastDate={lastMonthLastDate}
+                monthFirstDay={monthFirstDay}
+                date={i + 1}
+                currentYear={currentYear}
+                currentMonth={currentMonth + 1}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                isCurrentMonth={true}
+              />
+              // <button
+              //   className={`flex h-9 w-[50px] items-center justify-center bg-white transition-all hover:bg-[#e6e6e6] ${
+              //     dayjs(new Date(currentYear, currentMonth, i + 1)).isToday()
+              //       ? "bg-[#ffff76]"
+              //       : ""
+              //   }`}
+              //   key={i}
+              // >
+              //   {i + 1}日
+              // </button>
             ))}
+
+            {dayjs(`${currentYear}-${currentMonth + 1}`).daysInMonth() +
+              monthFirstDay <
+              42 &&
+              Array.from({
+                length:
+                  42 -
+                  (dayjs(`${currentYear}-${currentMonth + 1}`).daysInMonth() +
+                    monthFirstDay),
+              }).map((_, i) => (
+                <DateGrid
+                  key={`${currentMonth + 2}-${i}`}
+                  lastMonthLastDate={lastMonthLastDate}
+                  monthFirstDay={monthFirstDay}
+                  date={i + 1}
+                  currentYear={currentYear}
+                  currentMonth={currentMonth + 2}
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                  isCurrentMonth={false}
+                />
+              ))}
           </div>
         </div>
       </div>
+      <div>startDate: {!startDate ? "---" : startDate}</div>
+      <div>endDate: {!endDate ? "---" : endDate}</div>
     </div>
   );
 }
